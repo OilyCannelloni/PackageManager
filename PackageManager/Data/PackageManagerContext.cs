@@ -14,6 +14,6 @@ namespace PackageManager.Data
         {
         }
 
-        public DbSet<PackageManager.Models.Package> Package { get; set; } = default!;
+        public virtual DbSet<Package> Package { get; set; } = default!;
     }
 }
