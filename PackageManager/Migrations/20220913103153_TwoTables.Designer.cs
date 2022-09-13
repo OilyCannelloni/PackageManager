@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PackageManager.Data;
 
@@ -11,9 +12,10 @@ using PackageManager.Data;
 namespace PackageManager.Migrations
 {
     [DbContext(typeof(PackageManagerContext))]
-    partial class PackageManagerContextModelSnapshot : ModelSnapshot
+    [Migration("20220913103153_TwoTables")]
+    partial class TwoTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,7 +53,7 @@ namespace PackageManager.Migrations
 
                     b.HasIndex("PackageID");
 
-                    b.ToTable("Item", (string)null);
+                    b.ToTable("Item");
                 });
 
             modelBuilder.Entity("PackageManager.Models.Package", b =>
@@ -79,7 +81,7 @@ namespace PackageManager.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Package", (string)null);
+                    b.ToTable("Package");
                 });
 
             modelBuilder.Entity("PackageManager.Models.Item", b =>
