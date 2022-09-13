@@ -37,10 +37,13 @@ namespace PackageManager.Controllers
 
             var package = await _context.Package
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (package == null)
             {
                 return NotFound();
             }
+
+            package.Items = await _context.Item.AsQueryable().Where(i => i.PackageID == id).ToListAsync();
 
             return View(package);
         }

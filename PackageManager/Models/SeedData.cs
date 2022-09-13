@@ -13,6 +13,7 @@ namespace PackageManager.Models
             {
                 if (context.Package.Any()) return;
 
+                // add packages
                 context.Package.AddRange(
                     new Package
                     {
@@ -47,6 +48,67 @@ namespace PackageManager.Models
                         SealDate = null
                     }
                 );
+
+                //// add items
+                //context.Item.AddRange(
+                //    new Item
+                //    {
+                //        Name = "Cheese Sandwiches",
+                //        Address = "Krakowska 93",
+                //        CreationDate = DateTime.Parse("2022-08-01"),
+                //        Mass = 2.5f,
+                //        PackageID = 1
+                //    },
+                //    new Item
+                //    {
+                //        Name = "Bidding Boxes",
+                //        Address = "Czarnowiejska 18a",
+                //        CreationDate = DateTime.Parse("2022-05-22"),
+                //        Mass = 3.4f,
+                //        PackageID = 2
+
+                //    },
+                //    new Item
+                //    {
+                //        Name = "Card Travellers",
+                //        Address = "Czarnowiejska 18a",
+                //        CreationDate = DateTime.Parse("2022-05-23"),
+                //        Mass = 1.4f,
+                //        PackageID = 2
+                //    },
+                //    new Item
+                //    {
+                //        Name = "Chairs",
+                //        Address = "Czarnowiejska 19",
+                //        CreationDate = DateTime.Parse("2022-09-11"),
+                //        Mass = 223.0f,
+                //        PackageID = 2
+                //    },
+                //    new Item
+                //    {
+                //        Name = "Bricks",
+                //        Address = "Słoneczna 122a",
+                //        CreationDate = DateTime.Parse("2021-11-03"),
+                //        Mass = 897.5f,
+                //        PackageID = 3
+                //    },
+                //    new Item
+                //    {
+                //        Name = "Smoked Salmon",
+                //        Address = "Stawowa 68",
+                //        CreationDate = DateTime.Parse("2022-07-31"),
+                //        Mass = 22.1f,
+                //        PackageID = 3
+                //    },
+                //    new Item
+                //    {
+                //        Name = "Whiteboard Markers",
+                //        Address = "Zielonki 126c",
+                //        CreationDate = DateTime.Parse("2021-09-26"),
+                //        Mass = 4.9f,
+                //        PackageID = 4
+                //    }
+                //);
 
                 context.SaveChanges();
             }
