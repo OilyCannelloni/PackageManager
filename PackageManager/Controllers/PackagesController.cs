@@ -59,7 +59,7 @@ namespace PackageManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,CreationDate,City,IsSealed,SealDate")] Package package)
+        public async Task<IActionResult> Create([Bind("Id,Name,City,IsSealed,SealDate")] Package package)
         {
             if (ModelState.IsValid)
             {
