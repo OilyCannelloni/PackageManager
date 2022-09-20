@@ -1,0 +1,25 @@
+﻿@model PackageManager.Models.PackageItemViewModel
+
+<div class="row" style="margin-bottom: 20px">
+    <div class="col-sm-3">
+        <div class="form-group">
+            <label asp-for="Item.Name" class="control-label"></label>
+            <input asp-for="Item.Name" class="form-control" />
+            <span asp-validation-for="Item.Name" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="form-group">
+            <label asp-for="Item.Address" class="control-label"></label>
+            <input asp-for="Item.Address" class="form-control" />
+            <span asp-validation-for="Item.Address" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="form-group">
+            <label asp-for="Item.Mass" class="control-label"></label>
+            <input asp-for="Item.Mass" class="form-control" />
+            <span asp-validation-for="Item.Mass" class="text-danger"></span>
+        </div>
+    </div>
+</div>

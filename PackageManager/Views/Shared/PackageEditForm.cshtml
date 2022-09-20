@@ -1,0 +1,25 @@
+﻿@model PackageManager.Models.PackageItemViewModel
+
+<div class="row" style="margin-bottom: 20px">
+    <div class="col-md-4">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Package.Id" />
+        <div class="form-group">
+            <label asp-for="Package.Name" class="control-label"></label>
+            <input asp-for="Package.Name" class="form-control" />
+            <span asp-validation-for="Package.Name" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Package.City" class="control-label"></label>
+            <input asp-for="Package.City" class="form-control" />
+            <span asp-validation-for="Package.City" class="text-danger"></span>
+        </div>
+        <div class="form-group form-check">
+            <label class="form-check-label">
+                <input class="form-check-input" asp-for="Package.IsSealed" /> @Html.DisplayNameFor(model => model.Package.IsSealed)
+            </label>
+        </div>
+    </div>
+</div>
+
+

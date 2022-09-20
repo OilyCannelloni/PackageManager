@@ -83,7 +83,13 @@ namespace PackageManager.Controllers
             {
                 return NotFound();
             }
-            return View(package);
+
+            package.Items = await _context.Item.AsQueryable().Where(i => i.PackageID == id).ToListAsync();
+
+            var packageItemModel = new PackageItemViewModel();
+            packageItemModel.Package = package;
+
+            return View(packageItemModel);
         }
 
         // POST: Packages/Edit/5
@@ -91,7 +97,11 @@ namespace PackageManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,CreationDate,City,IsSealed,SealDate")] Package package)
+        public async Task<IActionResult> Edit(
+            int id, 
+            [Bind("Id,Name,CreationDate,City,IsSealed,SealDate")] Package package,
+            [Bind("Id,Name,CreationDate,Address,Mass")] IEnumerable<Item> items
+        )
         {
             if (id != package.Id)
             {
@@ -161,6 +171,12 @@ namespace PackageManager.Controllers
         private bool PackageExists(int id)
         {
           return (_context.Package?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
+
+        [HttpGet]
+        public virtual ActionResult LoadItemField()
+        {
+            return PartialView("AddItemForm");
         }
     }
 }
