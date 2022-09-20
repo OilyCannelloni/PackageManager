@@ -86,10 +86,7 @@ namespace PackageManager.Controllers
 
             package.Items = await _context.Item.AsQueryable().Where(i => i.PackageID == id).ToListAsync();
 
-            var packageItemModel = new PackageItemViewModel();
-            packageItemModel.Package = package;
-
-            return View(packageItemModel);
+            return View(package);
         }
 
         // POST: Packages/Edit/5
@@ -103,32 +100,43 @@ namespace PackageManager.Controllers
             [Bind("Id,Name,CreationDate,Address,Mass")] IEnumerable<Item> items
         )
         {
-            if (id != package.Id)
+            if (id != package.Id) return NotFound();
+            if (!ModelState.IsValid) return View(package);
+
+            foreach (var newItem in items)
             {
-                return NotFound();
+                if (newItem.Id != 0) // Update existing items
+                {
+                    var targetItem = _context.Item.SingleOrDefault(i => i.Id == newItem.Id);
+                    if (targetItem == null) continue;
+                    _context.Entry(targetItem).CurrentValues.SetValues(newItem);
+                }
+                else // Add new items
+                {
+                    newItem.PackageID = package.Id;
+                    _context.Item.Attach(newItem);
+                }
             }
 
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
-                    _context.Update(package);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!PackageExists(package.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                _context.Update(package);
+                await _context.SaveChangesAsync();
             }
-            return View(package);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!PackageExists(package.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction(nameof(Index));
+            
+            
         }
 
         // GET: Packages/Delete/5
@@ -173,9 +181,14 @@ namespace PackageManager.Controllers
           return (_context.Package?.Any(e => e.Id == id)).GetValueOrDefault();
         }
 
+
+        // GET: Packages/LoadItemField/5
         [HttpGet]
-        public virtual ActionResult LoadItemField()
+        public virtual ActionResult LoadItemField(int? id)
         {
+            if (id == null) return NotFound();
+
+            ViewBag.id = id;
             return PartialView("AddItemForm");
         }
     }

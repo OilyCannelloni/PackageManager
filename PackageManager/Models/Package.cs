@@ -16,6 +16,6 @@ namespace PackageManager.Models
         public string? City { get; set; }
         public bool IsSealed { get; set; }
         public DateTime? SealDate { get; set; }
-        public virtual ICollection<Item>? Items { get; set; } = new LinkedList<Item>();
+        public virtual List<Item>? Items { get; set; } = new List<Item>();
     }
 }

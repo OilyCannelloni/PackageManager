@@ -1,25 +1,26 @@
-﻿@model PackageManager.Models.PackageItemViewModel
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    int id = ViewBag.Id;
+}
+
+@model PackageManager.Models.Package
 
 <div class="row" style="margin-bottom: 20px">
+
     <div class="col-sm-3">
-        <div class="form-group">
-            <label asp-for="Item.Name" class="control-label"></label>
-            <input asp-for="Item.Name" class="form-control" />
-            <span asp-validation-for="Item.Name" class="text-danger"></span>
-        </div>
+        @Html.LabelFor(Model => Model.Items[id].Name)
+        @Html.EditorFor(Model => Model.Items[id].Name)
+        @Html.ValidationMessageFor(Model => Model.Items[id].Name)
     </div>
     <div class="col-sm-3">
-        <div class="form-group">
-            <label asp-for="Item.Address" class="control-label"></label>
-            <input asp-for="Item.Address" class="form-control" />
-            <span asp-validation-for="Item.Address" class="text-danger"></span>
-        </div>
+        @Html.LabelFor(Model => Model.Items[id].Address)
+        @Html.EditorFor(Model => Model.Items[id].Address)
     </div>
     <div class="col-sm-3">
-        <div class="form-group">
-            <label asp-for="Item.Mass" class="control-label"></label>
-            <input asp-for="Item.Mass" class="form-control" />
-            <span asp-validation-for="Item.Mass" class="text-danger"></span>
-        </div>
+        @Html.LabelFor(Model => Model.Items[id].Mass)
+        @Html.EditorFor(Model => Model.Items[id].Mass)
+        <span asp-validation-for="Items[id].Mass" class="text-danger"></span>
     </div>
 </div>
