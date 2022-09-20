@@ -7,20 +7,41 @@
 
 @model PackageManager.Models.Package
 
-<div class="row" style="margin-bottom: 20px">
-
+<div class="row" style="border: solid #aaaaaa 1px; padding: 10px; margin-top: 20px; margin-bottom: 20px" id=@($"itemRow{id}")>
     <div class="col-sm-3">
-        @Html.LabelFor(Model => Model.Items[id].Name)
-        @Html.EditorFor(Model => Model.Items[id].Name)
-        @Html.ValidationMessageFor(Model => Model.Items[id].Name)
+        <div class="row">
+            @Html.LabelFor(Model => Model.Items[id].Name)
+        </div>
+        <div class="row">
+            @Html.EditorFor(Model => Model.Items[id].Name)
+        </div>
+        <div class="row">
+            @Html.ValidationMessageFor(Model => Model.Items[id].Name)
+        </div>
     </div>
     <div class="col-sm-3">
-        @Html.LabelFor(Model => Model.Items[id].Address)
-        @Html.EditorFor(Model => Model.Items[id].Address)
+        <div class="row">
+            @Html.LabelFor(Model => Model.Items[id].Address)
+        </div>
+        <div class="row">
+            @Html.EditorFor(Model => Model.Items[id].Address)
+        </div>
+        <div class="row">
+            @Html.ValidationMessageFor(Model => Model.Items[id].Address)
+        </div>
     </div>
     <div class="col-sm-3">
-        @Html.LabelFor(Model => Model.Items[id].Mass)
-        @Html.EditorFor(Model => Model.Items[id].Mass)
-        <span asp-validation-for="Items[id].Mass" class="text-danger"></span>
+        <div class="row">
+            @Html.LabelFor(Model => Model.Items[id].Mass)
+        </div>
+        <div class="row">
+            @Html.EditorFor(Model => Model.Items[id].Mass)
+        </div>
+        <div class="row">
+            @Html.ValidationMessageFor(Model => Model.Items[id].Mass)
+        </div>
+    </div>
+    <div class="col-sm-3 d-flex justify-content-center align-items-center">
+        <button type="button" class="btn btn-danger" onclick=@($"deleteItemRow({id})")>Remove</button>
     </div>
 </div>
