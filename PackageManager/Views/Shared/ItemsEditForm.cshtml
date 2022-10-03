@@ -1,0 +1,49 @@
+﻿@model PackageManager.Models.Package
+
+
+@for (int i = 0; i < Model.Items.Count; i++) {
+    <div class="row itemInputRow" id=@($"itemRow{i}")>
+        <input type="hidden" name="Items.Index" value=@($"{i}") />
+
+        @Html.HiddenFor(Model => Model.Items[i].Id)
+        @Html.HiddenFor(Model => Model.Items[i].PackageID)
+        @Html.HiddenFor(Model => Model.Items[i].CreationDate)
+
+        <div class="col-sm-3 itemInputContainer">
+            <div class="row">
+                @Html.LabelFor(Model => Model.Items[i].Name)
+            </div>
+            <div class="row">
+                @Html.EditorFor(Model => Model.Items[i].Name)
+            </div>
+            <div class="row">
+                @Html.ValidationMessageFor(Model => Model.Items[i].Name)
+            </div>
+        </div>
+        <div class="col-sm-3 itemInputContainer">
+            <div class="row">
+                @Html.LabelFor(Model => Model.Items[i].Address)
+            </div>
+            <div class="row">
+                @Html.EditorFor(Model => Model.Items[i].Address)
+            </div>
+            <div class="row">
+                @Html.ValidationMessageFor(Model => Model.Items[i].Address)
+            </div>
+        </div>
+        <div class="col-sm-3 itemInputContainer">
+            <div class="row">
+                @Html.LabelFor(Model => Model.Items[i].Mass)
+            </div>
+            <div class="row">
+                @Html.EditorFor(Model => Model.Items[i].Mass)
+            </div>
+            <div class="row">
+                @Html.ValidationMessageFor(Model => Model.Items[i].Mass)
+            </div>
+        </div>
+        <div class="col-sm-1 d-flex justify-content-center itemInputDeleteButtonContainer">
+            <button type="button" class="btn btn-danger" onclick=@($"deleteItemRow({i})")>Remove</button>
+        </div>
+    </div>
+}

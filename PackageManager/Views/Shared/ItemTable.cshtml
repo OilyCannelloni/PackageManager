@@ -1,6 +1,10 @@
-﻿@model PackageManager.Models.PackageItemViewModel
+﻿@model PackageManager.Models.Package
 
-@if (Model.Package.Items.Count != 0)
+@if (Model.Items.Count == 0)
+{
+    <h4> There are no items in this package.</h4>
+} 
+else 
 {
     <h4> Items in package</h4>
     <hr />
@@ -8,21 +12,21 @@
         <thead>
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.Item.Name)
+                    @Html.DisplayNameFor(model => model.Items.First().Name)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Item.CreationDate)
+                    @Html.DisplayNameFor(model => model.Items.First().CreationDate)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Item.Address)
+                    @Html.DisplayNameFor(model => model.Items.First().Address)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Item.Mass)
+                    @Html.DisplayNameFor(model => model.Items.First().Mass)
                 </th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model.Package.Items)
+            @foreach (var item in Model.Items)
             {
                 <tr>
                     <td>
@@ -41,8 +45,4 @@
             }
         </tbody>
     </table>
-}
-else
-{
-    <h4> There are no items in this package.</h4>
 }

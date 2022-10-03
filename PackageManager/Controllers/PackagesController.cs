@@ -90,8 +90,6 @@ namespace PackageManager.Controllers
         }
 
         // POST: Packages/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(
@@ -103,7 +101,13 @@ namespace PackageManager.Controllers
             if (id != package.Id) return NotFound();
             if (!ModelState.IsValid) return View(package);
 
+            // Remove deleted items
+            foreach (var oldItem in _context.Item.Where(i => i.PackageID == id).ToList())
+            {
+                if (items.Select(item => item.Id).Contains(oldItem.Id)) continue;
 
+                _context.Item.Remove(oldItem);
+            }
 
 
             foreach (var newItem in items)
@@ -121,6 +125,7 @@ namespace PackageManager.Controllers
                 }
             }
 
+
             try
             {
                 _context.Update(package);
@@ -137,9 +142,7 @@ namespace PackageManager.Controllers
                     throw;
                 }
             }
-            return RedirectToAction(nameof(Index));
-            
-            
+            return RedirectToAction(nameof(Index)); 
         }
 
         // GET: Packages/Delete/5
@@ -157,6 +160,7 @@ namespace PackageManager.Controllers
                 return NotFound();
             }
 
+
             return View(package);
         }
 
@@ -169,11 +173,19 @@ namespace PackageManager.Controllers
             {
                 return Problem("Entity set 'PackageManagerContext.Package'  is null.");
             }
+
             var package = await _context.Package.FindAsync(id);
             if (package != null)
             {
                 _context.Package.Remove(package);
             }
+
+            /*
+            var packageItems = await _context.Item.AsQueryable()
+                .Where(i => i.PackageID == id)
+                .ToListAsync();
+            _context.Item.RemoveRange(packageItems);
+            */
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -194,5 +206,7 @@ namespace PackageManager.Controllers
             ViewBag.id = id;
             return PartialView("AddItemForm");
         }
+
+
     }
 }

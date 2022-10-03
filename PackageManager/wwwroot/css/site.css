@@ -16,3 +16,18 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+div.itemInputRow {
+    border: solid #aaaaaa 1px;
+    padding: 10px;
+    margin: 20px;
+    background-color: #dddddd
+}
+
+div.itemInputContainer {
+    margin: 10px;
+}
+
+div.itemInputDeleteButtonContainer {
+    margin: 10px;
+}

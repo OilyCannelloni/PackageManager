@@ -1,14 +1,14 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿
 @{
     int id = ViewBag.Id;
 }
 
 @model PackageManager.Models.Package
 
-<div class="row" style="border: solid #aaaaaa 1px; padding: 10px; margin-top: 20px; margin-bottom: 20px" id=@($"itemRow{id}")>
-    <div class="col-sm-3">
+<div class="row itemInputRow" id=@($"itemRow{id}")>
+    <input type="hidden" name="Items.Index" value=@($"{id}") />
+
+    <div class="col-sm-3 itemInputContainer">
         <div class="row">
             @Html.LabelFor(Model => Model.Items[id].Name)
         </div>
@@ -19,7 +19,7 @@
             @Html.ValidationMessageFor(Model => Model.Items[id].Name)
         </div>
     </div>
-    <div class="col-sm-3">
+    <div class="col-sm-3 itemInputContainer">
         <div class="row">
             @Html.LabelFor(Model => Model.Items[id].Address)
         </div>
@@ -30,7 +30,7 @@
             @Html.ValidationMessageFor(Model => Model.Items[id].Address)
         </div>
     </div>
-    <div class="col-sm-3">
+    <div class="col-sm-3 itemInputContainer">
         <div class="row">
             @Html.LabelFor(Model => Model.Items[id].Mass)
         </div>
@@ -41,7 +41,7 @@
             @Html.ValidationMessageFor(Model => Model.Items[id].Mass)
         </div>
     </div>
-    <div class="col-sm-3 d-flex justify-content-center align-items-center">
+    <div class="col-sm-1 d-flex justify-content-center itemInputDeleteButtonContainer">
         <button type="button" class="btn btn-danger" onclick=@($"deleteItemRow({id})")>Remove</button>
     </div>
 </div>

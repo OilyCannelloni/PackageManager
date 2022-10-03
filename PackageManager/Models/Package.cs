@@ -12,10 +12,10 @@ namespace PackageManager.Models
         public string? Name { get; set; }
 
         [Display(Name = "Creation Date")]
-        public DateTime? CreationDate { get; set; }
+        public DateTime CreationDate { get; set; } = DateTime.Now;
         public string? City { get; set; }
         public bool IsSealed { get; set; }
         public DateTime? SealDate { get; set; }
-        public virtual List<Item>? Items { get; set; } = new List<Item>();
+        public virtual List<Item> Items { get; set; } = new List<Item>();
     }
 }
