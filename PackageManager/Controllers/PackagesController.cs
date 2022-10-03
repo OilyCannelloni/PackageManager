@@ -20,10 +20,22 @@ namespace PackageManager.Controllers
         }
 
         // GET: Packages
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page=1)
         {
-              return _context.Package != null ? 
-                          View(await _context.Package.ToListAsync()) :
+            int recordsPerPage = 5;
+            int offset = (page - 1) * recordsPerPage;
+
+            ViewBag.page = page;
+            ViewBag.nPages = (_context.Package.Count() - 1) / recordsPerPage + 1;
+
+            var displayedPackages = await _context.Package
+                .OrderBy(x => x.CreationDate)
+                .Skip(offset)
+                .Take(recordsPerPage)
+                .ToListAsync();
+
+            return _context.Package != null ? 
+                          View(displayedPackages) :
                           Problem("Entity set 'PackageManagerContext.Package'  is null.");
         }
 
