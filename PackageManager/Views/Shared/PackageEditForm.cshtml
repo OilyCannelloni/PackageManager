@@ -2,8 +2,11 @@
 
 <div class="row" style="margin-bottom: 20px">
     <div class="col-md-4">
+
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="CreationDate" />
+        <input type="hidden" asp-for="SealDate" />
         <div class="form-group">
             <label asp-for="Name" class="control-label"></label>
             <input asp-for="Name" class="form-control" />

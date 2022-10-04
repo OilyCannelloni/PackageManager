@@ -4,10 +4,6 @@ namespace PackageManager.Models
 {
     public class Package
     {
-        public Package()
-        {
-            CreationDate = DateTime.Now;
-        }
         public int Id { get; set; }
         public string? Name { get; set; }
 

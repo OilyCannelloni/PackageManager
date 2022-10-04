@@ -67,8 +67,6 @@ namespace PackageManager.Controllers
         }
 
         // POST: Packages/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,City,IsSealed,SealDate")] Package package)
@@ -136,6 +134,8 @@ namespace PackageManager.Controllers
                     _context.Item.Attach(newItem);
                 }
             }
+
+            // Update Package info
 
 
             try
