@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PackageManager.Data;
@@ -34,9 +35,30 @@ namespace PackageManager.Controllers
                 .Take(recordsPerPage)
                 .ToListAsync();
 
-            return _context.Package != null ? 
-                          View(displayedPackages) :
-                          Problem("Entity set 'PackageManagerContext.Package'  is null.");
+            return View(displayedPackages);
+        }
+
+        // GET: Package list
+        public async Task<ActionResult> PackageList(int page=1, IsSealedFilter filter=IsSealedFilter.ANY)
+        {
+            int recordsPerPage = 5;
+            int offset = (page - 1) * recordsPerPage;
+
+            var filterPredicate = filter.GetFilter();
+
+            var filteredPackages = _context.Package
+                .OrderBy(x => x.CreationDate)
+                .Where(filterPredicate);
+                
+            ViewBag.page = page;
+            ViewBag.nPages = (filteredPackages.Count() - 1) / recordsPerPage + 1;
+
+            var displayedPackages = await filteredPackages
+                .Skip(offset)
+                .Take(recordsPerPage)
+                .ToListAsync();
+
+            return PartialView("PackageList", displayedPackages);
         }
 
         // GET: Packages/Details/5
