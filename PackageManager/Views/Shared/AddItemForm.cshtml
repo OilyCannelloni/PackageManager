@@ -41,7 +41,8 @@
             @Html.ValidationMessageFor(Model => Model.Items[id].Mass)
         </div>
     </div>
-    <div class="col-sm-1 d-flex justify-content-center itemInputDeleteButtonContainer">
-        <button type="button" class="btn btn-danger" onclick=@($"deleteItemRow({id})")>Remove</button>
+    <div class="col-sm-1 itemInputDeleteButtonContainer">
+        <button type="button" class="btn btn-close btn-lg btn-danger vh-center" onclick=@($"deleteItemRow({id})")></button>
     </div>
+    <div class="col-sm-2"></div>
 </div>

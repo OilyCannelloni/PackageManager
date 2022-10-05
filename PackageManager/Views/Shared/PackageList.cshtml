@@ -43,7 +43,6 @@
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                     <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                 </td>
             </tr>
@@ -51,7 +50,6 @@
     </tbody>
 </table>
 
-<hr />
 @{
 	int pageOffset = 1;
 	int start = Math.Max(1, ViewBag.page - pageOffset);

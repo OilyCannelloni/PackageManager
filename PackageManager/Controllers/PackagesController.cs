@@ -21,21 +21,9 @@ namespace PackageManager.Controllers
         }
 
         // GET: Packages
-        public async Task<IActionResult> Index(int page=1)
+        public IActionResult Index()
         {
-            int recordsPerPage = 5;
-            int offset = (page - 1) * recordsPerPage;
-
-            ViewBag.page = page;
-            ViewBag.nPages = (_context.Package.Count() - 1) / recordsPerPage + 1;
-
-            var displayedPackages = await _context.Package
-                .OrderBy(x => x.CreationDate)
-                .Skip(offset)
-                .Take(recordsPerPage)
-                .ToListAsync();
-
-            return View(displayedPackages);
+            return View();
         }
 
         // GET: Package list
@@ -61,62 +49,31 @@ namespace PackageManager.Controllers
             return PartialView("PackageList", displayedPackages);
         }
 
-        // GET: Packages/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null || _context.Package == null)
-            {
-                return NotFound();
-            }
-
-            var package = await _context.Package
-                .FirstOrDefaultAsync(m => m.Id == id);
-
-            if (package == null)
-            {
-                return NotFound();
-            }
-
-            package.Items = await _context.Item.AsQueryable().Where(i => i.PackageID == id).ToListAsync();
-
-            return View(package);
-        }
-
-        // GET: Packages/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Packages/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,City,IsSealed,SealDate")] Package package)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(package);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(package);
-        }
-
         // GET: Packages/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? id, bool unseal=false)
         {
-            if (id == null || _context.Package == null)
+            // If a new package is being created, show an empty Edit View
+            if (id == null)
             {
-                return NotFound();
+                return View(new Package());
             }
+            
 
+            // Otherwise fetch package from database
             var package = await _context.Package.FindAsync(id);
             if (package == null)
             {
                 return NotFound();
             }
-
             package.Items = await _context.Item.AsQueryable().Where(i => i.PackageID == id).ToListAsync();
+
+            // If package is not to be unsealed, show Details view
+            if (!unseal && package.IsSealed) return View("Details", package);
+
+            // The package was just unsealed, save that to database immediately
+            package.IsSealed = false;
+            _context.Update(package);
+            await _context.SaveChangesAsync();
 
             return View(package);
         }
@@ -126,6 +83,7 @@ namespace PackageManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(
             int id, 
+            bool seal,
             [Bind("Id,Name,CreationDate,City,IsSealed,SealDate")] Package package,
             [Bind("Id,Name,CreationDate,Address,Mass")] IEnumerable<Item> items
         )
@@ -133,35 +91,48 @@ namespace PackageManager.Controllers
             if (id != package.Id) return NotFound();
             if (!ModelState.IsValid) return View(package);
 
-            // Remove deleted items
-            foreach (var oldItem in _context.Item.Where(i => i.PackageID == id).ToList())
+            // Set seal status
+            if (seal)
             {
-                if (items.Select(item => item.Id).Contains(oldItem.Id)) continue;
-
-                _context.Item.Remove(oldItem);
+                package.IsSealed = true;
+                package.SealDate = DateTime.Now;
             }
+                
 
-
-            foreach (var newItem in items)
+            // Add Package if it does not exists
+            if (id == 0)
             {
-                if (newItem.Id != 0) // Update existing items
-                {
-                    var targetItem = _context.Item.SingleOrDefault(i => i.Id == newItem.Id);
-                    if (targetItem == null) continue;
-                    _context.Entry(targetItem).CurrentValues.SetValues(newItem);
-                }
-                else // Add new items
-                {
-                    newItem.PackageID = package.Id;
-                    _context.Item.Attach(newItem);
-                }
-            }
-
-            // Update Package info
-
+                package.Items = (List<Item>) items;
+                _context.Add(package);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            } 
 
             try
             {
+                // Remove deleted items
+                foreach (var oldItem in _context.Item.Where(i => i.PackageID == id).ToList())
+                {
+                    if (items.Select(item => item.Id).Contains(oldItem.Id)) continue;
+
+                    _context.Item.Remove(oldItem);
+                }
+
+                foreach (var newItem in items)
+                {
+                    if (newItem.Id != 0) // Update existing items
+                    {
+                        var targetItem = _context.Item.SingleOrDefault(i => i.Id == newItem.Id);
+                        if (targetItem == null) continue;
+                        _context.Entry(targetItem).CurrentValues.SetValues(newItem);
+                    }
+                    else // Add new items
+                    {
+                        newItem.PackageID = package.Id;
+                        _context.Item.Attach(newItem);
+                    }
+                }
+
                 _context.Update(package);
                 await _context.SaveChangesAsync();
             }
@@ -213,13 +184,6 @@ namespace PackageManager.Controllers
             {
                 _context.Package.Remove(package);
             }
-
-            /*
-            var packageItems = await _context.Item.AsQueryable()
-                .Where(i => i.PackageID == id)
-                .ToListAsync();
-            _context.Item.RemoveRange(packageItems);
-            */
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

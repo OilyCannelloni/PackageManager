@@ -18,16 +18,32 @@ body {
 }
 
 div.itemInputRow {
-    border: solid #aaaaaa 1px;
-    padding: 10px;
-    margin: 20px;
-    background-color: #dddddd
+    padding: 5px;
+    margin: 10px;
 }
 
 div.itemInputContainer {
-    margin: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 div.itemInputDeleteButtonContainer {
     margin: 10px;
+}
+
+.select-main {
+    padding: 6px;
+    width: 120px;
+    font-size: 16px;
+    border: 2px solid teal;
+    margin-left: 10px;
+}
+
+.vh-center {
+    margin: 0;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
 }
