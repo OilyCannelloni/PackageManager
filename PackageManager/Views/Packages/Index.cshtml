@@ -1,0 +1,37 @@
+﻿@model IEnumerable<PackageManager.Models.Package>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <input type="button" class="btn btn-success" asp-action="Edit" value="Create new package"/>
+</p>
+
+Filter Packages: <select class="select-main" name="sealedFilter" onchange="onConstraintChange({filter: this.value, page: 1})">
+    <option value="@(PackageManager.Models.IsSealedFilter.ANY)">All</option>
+    <option value="@(PackageManager.Models.IsSealedFilter.SEALED)">Sealed</option>
+    <option value="@(PackageManager.Models.IsSealedFilter.UNSEALED)">Unsealed</option>
+</select> 
+
+<div id="packageList">
+</div>
+
+<script type="text/javascript">
+    let constraints = {
+        filter: 0,
+        page: 1
+    }
+    function onConstraintChange(c) {
+        Object.assign(constraints, c);
+        let url = `/Packages/PackageList?filter=${constraints.filter}&page=${constraints.page}`;
+        $('#packageList').load(url);
+    }
+
+    $(document).ready(function() {
+        onConstraintChange({});
+    });
+</script>
+

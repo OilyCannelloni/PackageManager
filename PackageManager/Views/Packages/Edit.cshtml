@@ -1,0 +1,84 @@
+﻿@model PackageManager.Models.Package
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Package</h4>
+<hr />
+<form asp-action="Edit">
+    @{
+        await Html.RenderPartialAsync("~/Views/Shared/PackageEditForm.cshtml");
+    }
+
+    <h4>Items in package</h4>
+    <hr />
+
+
+
+    <div id="ItemsContainer">
+        @*@for (int i = 0; i < Model.Items.Count; i++) {
+            <div class="row itemInputRow" id=@($"itemRow{i}")>
+                <input type="hidden" name="Items.Index" value=@($"{i}") />
+
+                @Html.HiddenFor(Model => Model.Items[i].Id)
+                @Html.HiddenFor(Model => Model.Items[i].PackageID)
+                @Html.HiddenFor(Model => Model.Items[i].CreationDate)
+
+                @Html.Partial("ItemEditFields", Model, new ViewDataDictionary(ViewData){ {"Id", i} })
+
+                <div class="col-sm-1 itemInputDeleteButtonContainer">
+                    <button type="button" class="btn btn-close btn-lg btn-danger vh-center" onclick=@($"deleteItemRow({i})")></button>
+                </div>
+                <div class="col-sm-2"></div>
+            </div>
+        }*@
+        @Html.Partial("ItemsEditForm")
+    </div>
+
+
+    <button type="button" class="btn btn-warning" id="AddItemBtn">Add new item</button>
+    <hr />
+
+    <div class="row" style="margin-top: 10px">
+        <div class="col-md-4">
+            <div class="form-group">
+                <input type="submit" value="Save and Seal" class="btn btn-primary" asp-route-seal="true"/>
+                <input type="submit" value="Save" class="btn btn-warning" asp-route-seal="false"/>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+<script type="text/javascript">
+    let nItems;
+
+    $(document).ready(function () {
+        nItems = @Model.Items.Count;
+
+        $('#AddItemBtn').click(function () {
+            let url = `/Packages/LoadItemField/${nItems}`;
+            fetch(url)
+                .then(response => response.text())
+                .then(text => $('#ItemsContainer').append(text))
+                .then(() => nItems++)
+        });
+    });
+
+    function deleteItemRow(i) {
+        console.log(`removing ${i}`);
+        document.getElementById(`itemRow${i}`).remove();
+    }
+</script>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
