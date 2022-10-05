@@ -15,25 +15,7 @@
     <h4>Items in package</h4>
     <hr />
 
-
-
     <div id="ItemsContainer">
-        @*@for (int i = 0; i < Model.Items.Count; i++) {
-            <div class="row itemInputRow" id=@($"itemRow{i}")>
-                <input type="hidden" name="Items.Index" value=@($"{i}") />
-
-                @Html.HiddenFor(Model => Model.Items[i].Id)
-                @Html.HiddenFor(Model => Model.Items[i].PackageID)
-                @Html.HiddenFor(Model => Model.Items[i].CreationDate)
-
-                @Html.Partial("ItemEditFields", Model, new ViewDataDictionary(ViewData){ {"Id", i} })
-
-                <div class="col-sm-1 itemInputDeleteButtonContainer">
-                    <button type="button" class="btn btn-close btn-lg btn-danger vh-center" onclick=@($"deleteItemRow({i})")></button>
-                </div>
-                <div class="col-sm-2"></div>
-            </div>
-        }*@
         @Html.Partial("ItemsEditForm")
     </div>
 
@@ -44,17 +26,18 @@
     <div class="row" style="margin-top: 10px">
         <div class="col-md-4">
             <div class="form-group">
-                <input type="submit" value="Save and Seal" class="btn btn-primary" asp-route-seal="true"/>
-                <input type="submit" value="Save" class="btn btn-warning" asp-route-seal="false"/>
+                <input type="submit" value="Save and Seal" class="btn btn-success" asp-route-seal="true"/>
+                <input type="submit" value="Save" class="btn btn-primary" asp-route-seal="false"/>
+                <a asp-action="Index">
+                    <input type="button" class="btn btn-danger" value="Back to list" />
+                </a>
+
             </div>
         </div>
     </div>
 </form>
 
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 <script type="text/javascript">
     let nItems;

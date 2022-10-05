@@ -11,8 +11,10 @@ namespace PackageManager.Models
         public DateTime CreationDate { get; set; } = DateTime.Now;
         public string? City { get; set; }
 
-        [Display(Name = "Is Sealed")]
+        [Display(Name = "Seal Status")]
         public bool IsSealed { get; set; }
+
+        [Display(Name = "Seal Date")]
         public DateTime? SealDate { get; set; }
         public virtual List<Item> Items { get; set; } = new List<Item>();
     }

@@ -7,7 +7,10 @@
 <h1>Index</h1>
 
 <p>
-    <input type="button" class="btn btn-success" asp-action="Edit" value="Create new package"/>
+    <a asp-action="Edit">
+        <input type="button" class="btn btn-success" value="Create new package" />
+    </a>
+    
 </p>
 
 Filter Packages: <select class="select-main" name="sealedFilter" onchange="onConstraintChange({filter: this.value, page: 1})">

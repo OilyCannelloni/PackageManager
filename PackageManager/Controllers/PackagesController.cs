@@ -89,8 +89,11 @@ namespace PackageManager.Controllers
         )
         {
             if (id != package.Id) return NotFound();
-            if (!ModelState.IsValid) return View(package);
-
+            if (!ModelState.IsValid)
+            {
+                package.Items = (List<Item>)items;
+                return View(package);
+            }
             // Set seal status
             if (seal)
             {
